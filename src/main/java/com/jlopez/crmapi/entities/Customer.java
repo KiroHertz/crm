@@ -1,6 +1,7 @@
 package com.jlopez.crmapi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -10,27 +11,33 @@ public class Customer {
     @Column(columnDefinition = "serial")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull(message = "Name field is required")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @NotNull(message = "Surname field is required")
+    @Column(name = "surname", nullable = false)
     private String surname;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @NotNull(message = "Email field is required")
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "photo_url")
     private String photoUrl;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
     @ManyToOne()
-    @JoinColumn(columnDefinition = "long", name = "created_by", nullable = false)
+    @JoinColumn(name = "created_by", columnDefinition = "long", nullable = false)
     private User createdBy;
 
     @Column(name = "created_at")
     private Date createdAt;
 
     @ManyToOne()
-    @JoinColumn(columnDefinition = "long", name = "updated_by")
+    @JoinColumn(name = "updated_by", columnDefinition = "long")
     private User updatedBy;
 
     @Column(name = "updated_at")
@@ -77,6 +84,14 @@ public class Customer {
 
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public User getCreatedBy() {
