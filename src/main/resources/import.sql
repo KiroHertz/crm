@@ -1,2 +1,2 @@
-INSERT INTO USER (id, name, last_name, email, password, admin, deleted) values (1, 'Administrator', 'Company', 'admin@crm.com', 'password', true, false);
-INSERT INTO CUSTOMER(name, surname, email, created_by) values ('Jose Maria', 'Lopez', 'jlopez_gcc@gmail.com', 1);
+INSERT INTO USER (id, name, surname, email, password, admin, deleted) values (1, 'Administrator', 'Company', 'admin@crm.com', 'password', true, false);
+INSERT INTO CUSTOMER(name, surname, email, deleted, created_by) values ('Jose Maria', 'Lopez', 'jlopez_gcc@gmail.com', false, 1);
