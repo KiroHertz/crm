@@ -83,27 +83,20 @@ public class Customer {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
+    public void setCreatedBy(Long createdByUserId) {
+        User createdByUser = new User();
+        createdByUser.setId(createdByUserId);
+
+        this.createdBy = createdByUser;
     }
 
     public User getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(User updatedByUser) {
-        this.updatedBy = updatedByUser;
-    }
-
-    public void setCreatedBy(Long createdByUserId) {
-        User createdByUser = new User();
-        createdByUser.setId(createdByUserId);
-        this.createdBy = createdByUser;
-    }
-
-    public void setModifiedBy(Long modifiedByUserId) {
+    public void setUpdatedBy(Long updatedByUserId) {
         User modifiedByUser = new User();
-        modifiedByUser.setId(modifiedByUserId);
+        modifiedByUser.setId(updatedByUserId);
 
         this.updatedBy = modifiedByUser;
     }
