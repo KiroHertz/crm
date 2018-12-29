@@ -2,10 +2,13 @@ package com.jlopez.crmapi.controllers;
 
 import com.jlopez.crmapi.entities.Customer;
 import com.jlopez.crmapi.exceptions.ExceptionHandlerController;
+import com.jlopez.crmapi.models.CustomUserDetails;
 import com.jlopez.crmapi.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,8 +38,8 @@ public class CustomerController extends ExceptionHandlerController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> create(@Valid @NotNull @RequestBody Customer customer) {
-        return customerService.create(customer)
+    public ResponseEntity<Customer> create(@Valid @NotNull @RequestBody Customer customer, Authentication authentication) {
+        return customerService.create(customer, (CustomUserDetails) authentication.getPrincipal())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }

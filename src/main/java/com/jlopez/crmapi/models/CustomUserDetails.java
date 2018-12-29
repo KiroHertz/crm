@@ -11,6 +11,8 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
+    private Long id;
+
     private String userName;
 
     private String password;
@@ -20,6 +22,7 @@ public class CustomUserDetails implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(User user) {
+        this.id = user.getId();
         this.userName = user.getName();
         this.password = user.getPassword();
         this.isDeleted = user.isDeleted();
@@ -39,6 +42,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return userName;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

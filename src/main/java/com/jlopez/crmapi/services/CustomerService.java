@@ -1,6 +1,7 @@
 package com.jlopez.crmapi.services;
 
 import com.jlopez.crmapi.entities.Customer;
+import com.jlopez.crmapi.models.CustomUserDetails;
 import com.jlopez.crmapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ public class CustomerService {
         return customerRepository.findById(customerId);
     }
 
-    public Optional<Customer> create(Customer customer) {
+    public Optional<Customer> create(Customer customer, CustomUserDetails userDetails) {
+        customer.setCreatedBy(userDetails.getId());
         return Optional.of(customerRepository.save(customer));
     }
 
