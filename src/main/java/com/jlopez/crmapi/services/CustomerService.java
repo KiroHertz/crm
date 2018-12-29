@@ -5,6 +5,7 @@ import com.jlopez.crmapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,25 @@ public class CustomerService {
         return customerRepository.findById(customerId);
     }
 
-    public String create() {
-        return "Customer creation";
+    public Optional<Customer> create(Customer customer) {
+        return Optional.of(customerRepository.save(customer));
+    }
+
+    public Optional<Customer> update(Customer customer) {
+        return Optional.ofNullable(null);
+    }
+
+    public void delete(Long customerId) {
+        Optional<Customer> customerFromDatabase = findById(customerId);
+
+        if (!customerFromDatabase.isPresent()) {
+            throw new EntityNotFoundException(String.format("Customer with id %d is not in the database", customerId));
+        }
+
+        Customer customerToSave = customerFromDatabase.get();
+
+        customerToSave.setDeleted(true);
+
+        customerRepository.save(customerToSave);
     }
 }

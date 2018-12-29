@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -33,7 +35,22 @@ public class CustomerController extends ExceptionHandlerController {
     }
 
     @PostMapping
-    public String create() {
-        return customerService.create();
+    public ResponseEntity<Customer> create(@Valid @NotNull @RequestBody Customer customer) {
+        return customerService.create(customer)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
+
+    @PutMapping
+    public ResponseEntity<Customer> update(@Valid @NotNull @RequestBody Customer customer) {
+        return customerService.update(customer)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
+
+    @DeleteMapping("/{customerId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void delete(Long customerId) {
+        customerService.delete(customerId);
     }
 }
