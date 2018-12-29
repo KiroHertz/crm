@@ -1,2 +1,3 @@
-INSERT INTO USER (id, name, surname, email, password, admin, deleted) values (1, 'Administrator', 'Company', 'admin@crm.com', 'password', true, false);
+INSERT INTO USER (id, name, surname, email, password, admin, deleted) values (1, 'Administrator', 'Company', 'admin@crm.com', '$2a$04$q69N4L1GO2nuBSG3Y.ug5Ov.ChZsGdmrTKB6RtZ5ygXOITN9Ywp5.', true, false);
+INSERT INTO USER (id, name, surname, email, password, admin, deleted) values (2, 'NotAdministrator', 'Company', 'notadmin@crm.com', '$2a$04$q69N4L1GO2nuBSG3Y.ug5Ov.ChZsGdmrTKB6RtZ5ygXOITN9Ywp5.', false, false);
 INSERT INTO CUSTOMER(name, surname, email, deleted, created_by) values ('Jose Maria', 'Lopez', 'jlopez_gcc@gmail.com', false, 1);
