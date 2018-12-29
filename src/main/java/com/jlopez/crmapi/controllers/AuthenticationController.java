@@ -2,7 +2,7 @@ package com.jlopez.crmapi.controllers;
 
 import com.jlopez.crmapi.filters.TokenProvider;
 import com.jlopez.crmapi.models.AuthenticationRequest;
-import com.jlopez.crmapi.models.AuthenticationToken;
+import com.jlopez.crmapi.models.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,7 +29,7 @@ public class AuthenticationController {
         this.tokenProvider = tokenProvider;
     }
 
-    @PostMapping("/generate-token")
+    @PostMapping()
     public ResponseEntity authenticate(@RequestBody AuthenticationRequest authenticationRequest) throws AuthenticationException {
 
         final Authentication authentication = authenticationManager.authenticate(
@@ -41,7 +41,7 @@ public class AuthenticationController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(new AuthenticationToken(tokenProvider.generateToken(authentication)));
+        return ResponseEntity.ok(new AuthenticationResponse(tokenProvider.generateToken(authentication)));
     }
 
 }

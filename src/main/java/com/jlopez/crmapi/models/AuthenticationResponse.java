@@ -1,14 +1,14 @@
 package com.jlopez.crmapi.models;
 
-public class AuthenticationToken {
+public class AuthenticationResponse {
 
     private String token;
 
-    public AuthenticationToken() {
+    public AuthenticationResponse() {
 
     }
 
-    public AuthenticationToken(String token) {
+    public AuthenticationResponse(String token) {
         this.token = token;
     }
 
