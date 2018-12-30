@@ -5,6 +5,7 @@ import com.jlopez.crmapi.models.CustomUserDetails;
 import com.jlopez.crmapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -15,9 +16,12 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    private final StorageService storageService;
+
     @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, StorageService storageService) {
         this.customerRepository = customerRepository;
+        this.storageService = storageService;
     }
 
     public List<Customer> findAll() {
@@ -28,26 +32,45 @@ public class CustomerService {
         return customerRepository.findById(customerId);
     }
 
-    public Optional<Customer> create(Customer customer, CustomUserDetails userDetails) {
-        customer.setCreatedBy(userDetails.getId());
+    public Optional<Customer> create(Customer customer, CustomUserDetails customUserDetails) {
+        customer.setCreatedBy(customUserDetails.getId());
         return Optional.of(customerRepository.save(customer));
     }
 
-    public Optional<Customer> update(Customer customer) {
+    public Optional<Customer> update(Customer customer, CustomUserDetails customUserDetails) {
         return Optional.ofNullable(null);
     }
 
     public void delete(Long customerId) {
+        Customer customerToSave = getCustomerFromDatabase(customerId);
+
+        customerToSave.setDeleted(true);
+
+        customerRepository.save(customerToSave);
+    }
+
+    public void saveCustomerPhoto(Long customerId, MultipartFile file, CustomUserDetails customUserDetails) {
+        Customer customerToSave = getCustomerFromDatabase(customerId);
+
+        if (customerToSave.getPhotoUrl() != null && !customerToSave.getPhotoUrl().isEmpty()) {
+            storageService.delete(customerId, file.getOriginalFilename());
+        }
+
+        storageService.store(customerId, file.getOriginalFilename(), file);
+
+        customerToSave.setPhotoUrl(file.getOriginalFilename());
+        customerToSave.setUpdatedBy(customUserDetails.getId());
+
+        customerRepository.save(customerToSave);
+
+    }
+
+    private Customer getCustomerFromDatabase(Long customerId) throws EntityNotFoundException {
         Optional<Customer> customerFromDatabase = findById(customerId);
 
         if (!customerFromDatabase.isPresent()) {
             throw new EntityNotFoundException(String.format("Customer with id %d is not in the database", customerId));
         }
-
-        Customer customerToSave = customerFromDatabase.get();
-
-        customerToSave.setDeleted(true);
-
-        customerRepository.save(customerToSave);
+        return customerFromDatabase.get();
     }
 }

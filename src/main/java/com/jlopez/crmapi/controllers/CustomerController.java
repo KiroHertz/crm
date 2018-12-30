@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -45,8 +46,8 @@ public class CustomerController extends ExceptionHandlerController {
     }
 
     @PutMapping
-    public ResponseEntity<Customer> update(@Valid @NotNull @RequestBody Customer customer) {
-        return customerService.update(customer)
+    public ResponseEntity<Customer> update(@Valid @NotNull @RequestBody Customer customer, Authentication authentication) {
+        return customerService.update(customer, (CustomUserDetails) authentication.getPrincipal())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
@@ -55,5 +56,11 @@ public class CustomerController extends ExceptionHandlerController {
     @ResponseStatus(value = HttpStatus.OK)
     public void delete(Long customerId) {
         customerService.delete(customerId);
+    }
+
+    @PostMapping("/{id}/photo")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void handleFileUpload(@PathVariable("id") Long customerId, @RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
+        customerService.saveCustomerPhoto(customerId, file, (CustomUserDetails) authentication.getPrincipal());
     }
 }
