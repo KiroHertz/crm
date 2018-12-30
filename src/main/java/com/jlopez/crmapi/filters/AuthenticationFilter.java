@@ -37,9 +37,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = tokenProvider.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
-                logger.error("an error occured during getting username from token", e);
+                logger.error("An error occurred during getting username from token");
             } catch (ExpiredJwtException e) {
-                logger.warn("the token is expired and not valid anymore", e);
+                logger.warn("The token provided has expired and it is not valid anymore");
             } catch (SignatureException e) {
                 logger.error("Authentication Failed. Username or Password not valid.");
             }
@@ -53,7 +53,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if (tokenProvider.validateToken(authToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = tokenProvider.getAuthentication(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                logger.info("authenticated user " + username + ", setting security context");
+                logger.info(String.format("authenticated user %s, setting security context", username));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
