@@ -26,8 +26,7 @@ public class StorageService {
                     .withRegion(CLIENT_REGION)
                     .withCredentials(new ProfileCredentialsProvider())
                     .build();
-
-            // Upload a text string as a new object.
+            
             s3Client.putObject(BUCKET_NAME, customerId + '/' + originalFilename, convertToFile(multipartFile));
 
 
