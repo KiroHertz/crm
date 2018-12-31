@@ -1,6 +1,7 @@
 package com.jlopez.crmapi.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
@@ -9,23 +10,27 @@ public class User {
     @Column(columnDefinition = "serial")
     private Long id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
     @Column(name = "surname", nullable = false)
     private String surname;
 
+    @NotNull
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "admin", nullable = false)
-    private boolean admin;
+    private boolean admin = false;
 
     @Column(name = "deleted", nullable = false)
-    private boolean deleted;
+    private boolean deleted = false;
 
     public User() {
     }
