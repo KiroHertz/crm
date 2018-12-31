@@ -21,7 +21,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         User user = userService
-                .findActiveUserByName(name)
+                .findByNameAndDeletedFalse(name)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("[CustomUserDetailService] User with name %s not found", name)));
 
         return new CustomUserDetails(user);
