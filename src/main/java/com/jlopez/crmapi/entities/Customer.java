@@ -1,5 +1,7 @@
 package com.jlopez.crmapi.entities;
 
+import com.jlopez.crmapi.models.CustomerCreationRequest;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -141,5 +143,13 @@ public class Customer {
             this.createdAt = this.updatedAt;
         }
 
+    }
+
+    public static Customer fromCreationRequest(CustomerCreationRequest creationRequest) {
+        Customer customer = new Customer();
+        customer.setName(creationRequest.getName());
+        customer.setSurname(creationRequest.getSurName());
+        customer.setEmail(creationRequest.getEmail());
+        return customer;
     }
 }

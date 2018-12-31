@@ -2,12 +2,15 @@ package com.jlopez.crmapi.services;
 
 import com.jlopez.crmapi.entities.Customer;
 import com.jlopez.crmapi.models.CustomUserDetails;
+import com.jlopez.crmapi.models.CustomerCreationRequest;
 import com.jlopez.crmapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,9 +35,10 @@ public class CustomerService {
         return customerRepository.findById(customerId);
     }
 
-    public Optional<Customer> create(Customer customer, CustomUserDetails customUserDetails) {
-        customer.setCreatedBy(customUserDetails.getId());
-        return Optional.of(customerRepository.save(customer));
+    public Optional<Customer> create(@Valid @NotNull CustomerCreationRequest creationRequest, CustomUserDetails customUserDetails) {
+        Customer customerToSave = Customer.fromCreationRequest(creationRequest);
+        customerToSave.setCreatedBy(customUserDetails.getId());
+        return Optional.of(customerRepository.save(customerToSave));
     }
 
     public Optional<Customer> update(Long customerId, Customer customer, CustomUserDetails customUserDetails) {
