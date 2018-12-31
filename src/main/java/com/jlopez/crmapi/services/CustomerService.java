@@ -86,7 +86,7 @@ public class CustomerService {
 
         customerToSave.setName(updateRequest.getName());
 
-        customerToSave.setSurname(updateRequest.getSurName());
+        customerToSave.setSurname(updateRequest.getSurname());
 
         customerToSave.setEmail(updateRequest.getEmail());
 

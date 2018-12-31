@@ -149,7 +149,7 @@ public class Customer {
     public static Customer fromCreationRequest(CustomerCreationRequest creationRequest) {
         Customer customer = new Customer();
         customer.setName(creationRequest.getName());
-        customer.setSurname(creationRequest.getSurName());
+        customer.setSurname(creationRequest.getSurname());
         customer.setEmail(creationRequest.getEmail());
         return customer;
     }

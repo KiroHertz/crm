@@ -10,7 +10,7 @@ public class CustomerCreationRequest {
 
     @NotNull
     @NotBlank
-    private String surName;
+    private String surname;
 
     @NotNull
     @NotBlank
@@ -27,12 +27,12 @@ public class CustomerCreationRequest {
         this.name = name;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {

@@ -7,7 +7,7 @@ public class CustomerUpdateRequest {
     private String name;
 
     @NotBlank
-    private String surName;
+    private String surname;
 
     @NotBlank
     private String email;
@@ -23,12 +23,12 @@ public class CustomerUpdateRequest {
         this.name = name;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
