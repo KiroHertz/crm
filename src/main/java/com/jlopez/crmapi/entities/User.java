@@ -1,5 +1,7 @@
 package com.jlopez.crmapi.entities;
 
+import com.jlopez.crmapi.models.UserCreationRequest;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -89,5 +91,14 @@ public class User {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public static User fromCreationRequest(UserCreationRequest creationRequest) {
+        User user = new User();
+        user.setName(creationRequest.getName());
+        user.setSurname(creationRequest.getSurname());
+        user.setEmail(creationRequest.getEmail());
+        user.setPassword(creationRequest.getPassword());
+        return user;
     }
 }

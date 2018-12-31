@@ -1,11 +1,15 @@
 package com.jlopez.crmapi.services;
 
 import com.jlopez.crmapi.entities.User;
+import com.jlopez.crmapi.models.UserCreationRequest;
+import com.jlopez.crmapi.models.UserUpdateRequest;
 import com.jlopez.crmapi.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,13 +34,15 @@ public class UserService {
         return userRepository.findByNameAndDeletedFalse(name);
     }
 
-    public Optional<User> create(User user) {
-        return Optional.of(userRepository.save(user));
+    public Optional<User> create(@Valid @NotNull UserCreationRequest creationRequest) {
+        User userToSave = User.fromCreationRequest(creationRequest);
+        return Optional.of(userRepository.save(userToSave));
     }
 
-    public Optional<User> update(Long userId, User user) {
+    public Optional<User> update(Long userId, UserUpdateRequest updateRequest) {
         User userToSave = getUserFromDatabase(userId);
-        return Optional.of(userRepository.save(user));
+        updateUserValues(updateRequest, userToSave);
+        return Optional.of(userRepository.save(userToSave));
     }
 
     public void changeAdminStatus(Long userId, boolean administratorStatus) {
@@ -62,5 +68,12 @@ public class UserService {
             throw new EntityNotFoundException(String.format("User with id %d is not in the database", userId));
         }
         return userFromDatabase.get();
+    }
+
+    private void updateUserValues(UserUpdateRequest updateRequest, User userToSave) {
+        userToSave.setName(updateRequest.getName());
+        userToSave.setSurname(updateRequest.getSurname());
+        userToSave.setEmail(updateRequest.getEmail());
+        userToSave.setPassword(updateRequest.getPassword());
     }
 }

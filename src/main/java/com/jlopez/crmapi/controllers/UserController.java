@@ -2,6 +2,8 @@ package com.jlopez.crmapi.controllers;
 
 import com.jlopez.crmapi.entities.User;
 import com.jlopez.crmapi.exceptions.ExceptionHandlerController;
+import com.jlopez.crmapi.models.UserCreationRequest;
+import com.jlopez.crmapi.models.UserUpdateRequest;
 import com.jlopez.crmapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,16 +42,16 @@ public class UserController extends ExceptionHandlerController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping
-    public ResponseEntity<User> create(@Valid @NotNull @RequestBody User user) {
-        return userService.create(user)
+    public ResponseEntity<User> create(@Valid @NotNull @RequestBody UserCreationRequest creationRequest) {
+        return userService.create(creationRequest)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/{userId}")
-    public ResponseEntity<User> update(@PathVariable Long userId, @Valid @NotNull @RequestBody User user) {
-        return userService.update(userId, user)
+    public ResponseEntity<User> update(@PathVariable Long userId, UserUpdateRequest updateRequest) {
+        return userService.update(userId, updateRequest)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
