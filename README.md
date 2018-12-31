@@ -1,6 +1,10 @@
 # CRM API
-Example API for a CRM using Spring Boot
+Example API for a CRM using Spring Boot. The application is ready to go since it uses H2 as database source. All except photo handling should work properly.
+In order to test the photo uploads we need to septup our authentication for AWS (Check Storage section).
 
+## User creation
+
+The application uses Bcrypt to encode the user password. The application expects to receive the password encoded when creation/updating an user.
 ## Storage
 
 For the implementation of the management of customer images I've decided to use AWS S3. In order to make it work we need one of the following:
