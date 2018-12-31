@@ -57,6 +57,17 @@ public class CustomerService {
         customerRepository.save(customerToSave);
     }
 
+    public String getPhotoUrl(Long customerId) {
+        Customer customerFromDatabase = getCustomerFromDatabase(customerId);
+
+        if (customerFromDatabase.getPhotoUrl() == null || customerFromDatabase.getPhotoUrl().isEmpty()) {
+            throw new EntityNotFoundException("Customer does not have a photo");
+        }
+
+
+        return String.format("https://s3.amazonaws.com/theam-crm-images/%s/%s", customerId, customerFromDatabase.getPhotoUrl());
+    }
+
     public void saveCustomerPhoto(Long customerId, MultipartFile file, CustomUserDetails customUserDetails) {
         Customer customerToSave = getCustomerFromDatabase(customerId);
 

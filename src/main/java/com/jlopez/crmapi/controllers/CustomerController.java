@@ -59,6 +59,10 @@ public class CustomerController extends ExceptionHandlerController {
         customerService.delete(customerId);
     }
 
+    @GetMapping("/{customerId}/photo")
+    public String getPhotoUrl(@PathVariable("customerId") Long customerId) {
+        return customerService.getPhotoUrl(customerId);
+    }
     @PostMapping("/{customerId}/photo")
     @ResponseStatus(value = HttpStatus.OK)
     public void handleFileUpload(@PathVariable("customerId") Long customerId, @RequestParam("file") MultipartFile file, Authentication authentication) {
