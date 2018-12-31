@@ -37,8 +37,9 @@ public class CustomerService {
         return Optional.of(customerRepository.save(customer));
     }
 
-    public Optional<Customer> update(Customer customer, CustomUserDetails customUserDetails) {
-        return Optional.ofNullable(null);
+    public Optional<Customer> update(Long customerId, Customer customer, CustomUserDetails customUserDetails) {
+        Customer customerToSave = getCustomerFromDatabase(customerId);
+        return Optional.ofNullable(customer);
     }
 
     public void delete(Long customerId) {

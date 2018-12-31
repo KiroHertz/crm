@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -45,9 +44,9 @@ public class CustomerController extends ExceptionHandlerController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
-    @PutMapping
-    public ResponseEntity<Customer> update(@Valid @NotNull @RequestBody Customer customer, Authentication authentication) {
-        return customerService.update(customer, (CustomUserDetails) authentication.getPrincipal())
+    @PutMapping("/{customerId}")
+    public ResponseEntity<Customer> update(@PathVariable Long customerId, @Valid @NotNull @RequestBody Customer customer, Authentication authentication) {
+        return customerService.update(customerId, customer, (CustomUserDetails) authentication.getPrincipal())
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
@@ -58,9 +57,9 @@ public class CustomerController extends ExceptionHandlerController {
         customerService.delete(customerId);
     }
 
-    @PostMapping("/{id}/photo")
+    @PostMapping("/{customerId}/photo")
     @ResponseStatus(value = HttpStatus.OK)
-    public void handleFileUpload(@PathVariable("id") Long customerId, @RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
+    public void handleFileUpload(@PathVariable("customerId") Long customerId, @RequestParam("file") MultipartFile file, Authentication authentication) {
         customerService.saveCustomerPhoto(customerId, file, (CustomUserDetails) authentication.getPrincipal());
     }
 }
