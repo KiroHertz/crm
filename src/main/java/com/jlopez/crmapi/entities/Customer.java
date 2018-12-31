@@ -135,6 +135,7 @@ public class Customer {
     }
 
     @PrePersist
+    @PreUpdate
     void preInsert() {
 
         this.updatedAt = new Date();

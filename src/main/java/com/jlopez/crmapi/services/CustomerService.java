@@ -3,6 +3,7 @@ package com.jlopez.crmapi.services;
 import com.jlopez.crmapi.entities.Customer;
 import com.jlopez.crmapi.models.CustomUserDetails;
 import com.jlopez.crmapi.models.CustomerCreationRequest;
+import com.jlopez.crmapi.models.CustomerUpdateRequest;
 import com.jlopez.crmapi.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,11 @@ public class CustomerService {
         return Optional.of(customerRepository.save(customerToSave));
     }
 
-    public Optional<Customer> update(Long customerId, Customer customer, CustomUserDetails customUserDetails) {
+    public Optional<Customer> update(Long customerId, CustomerUpdateRequest updateRequest, CustomUserDetails customUserDetails) {
         Customer customerToSave = getCustomerFromDatabase(customerId);
-        return Optional.ofNullable(customer);
+        updateCustomerValues(updateRequest, customerToSave);
+        customerToSave.setUpdatedBy(customUserDetails.getId());
+        return Optional.ofNullable(customerRepository.save(customerToSave));
     }
 
     public void delete(Long customerId) {
@@ -77,5 +80,15 @@ public class CustomerService {
             throw new EntityNotFoundException(String.format("Customer with id %d is not in the database", customerId));
         }
         return customerFromDatabase.get();
+    }
+
+    private void updateCustomerValues(CustomerUpdateRequest updateRequest, Customer customerToSave) {
+
+        customerToSave.setName(updateRequest.getName());
+
+        customerToSave.setSurname(updateRequest.getSurName());
+
+        customerToSave.setEmail(updateRequest.getEmail());
+
     }
 }
